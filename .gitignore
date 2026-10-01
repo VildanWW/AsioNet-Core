@@ -1,0 +1,31 @@
+# Папки сборки (build) внутри подпроектов
+/*/build*/
+Client/build/
+Server/build/
+
+# Временные файлы сборщика QMake
+.qmake.stash
+Makefile*
+object_script.*
+
+# Бинарники и отладочные файлы
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.idb
+
+# Сгенерированные Qt файлы (если они создаются в корне, а не в build)
+ui_*.h
+moc_*.cpp
+
+# Специфичный мусор от Visual Studio
+.vs/
+x64/
+Server/x64/
+Server/Server/x64/
+*.log
+*.tlog
+*.recipe
+*.lastbuildstate
+*.vcxproj.user
