@@ -29,3 +29,10 @@ Server/Server/x64/
 *.recipe
 *.lastbuildstate
 *.vcxproj.user
+
+# Игнорируем пакеты NuGet
+*.nupkg
+**/packages/
+packages/
+vcpkg_installed/
+.conan/
