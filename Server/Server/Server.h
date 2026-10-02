@@ -1,6 +1,7 @@
 ﻿#pragma once
-#include "Settings.h"
 #include <boost/asio.hpp>
+#include "Settings.h"
+
 class Server {
 private:
 	Net::asio::io_context ioContext;

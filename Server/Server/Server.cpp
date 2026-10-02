@@ -1,14 +1,15 @@
-﻿#include "Server.h"
-#include "Settings.h"
-#include <boost/asio.hpp>
+﻿#include <boost/asio.hpp>
+#include <spdlog/spdlog.h>
 #include <iostream>
+#include "Server.h"
+#include "Settings.h"
 
 Server::Server() : acceptor(ioContext) {}
 
 bool Server::StartServer(int inputPort) {
 
 	if (inputPort < 1024 || inputPort > 65535) {
-		std::cout << "Port isn't valid!\n";
+		spdlog::error("[Server] Port isn't valid!");
 		return false;
 	}
 	else {
@@ -18,20 +19,34 @@ bool Server::StartServer(int inputPort) {
 	Net::sys::error_code errorCode;
 
 	acceptor.open(Net::tcp::v4(), errorCode);
+	if (errorCode) {
+		spdlog::error("[Server] Method open isn't valid!");
+		return false;
+	}
 
-	if (errorCode) return false;
-
-	acceptor.set_option(Net::tcp::acceptor::reuse_address(true), errorCode);
+	acceptor.set_option(Net::asio::socket_base::reuse_address(true), errorCode);
+	if (errorCode) {
+		spdlog::error("[Server] Method set_option isn't valid!");
+		return false;
+	}
 
 	acceptor.bind({ Net::tcp::v4(), Settings::port }, errorCode);
-
 	if (errorCode == Net::error::address_in_use) {
-		std::cout << "Port is already busy\n";
-		acceptor.close();
+		spdlog::error("[Server] Port is already busy");
+		return false;
+	}
+	if (errorCode) {
+		spdlog::error("[Server] Unknown error");
 		return false;
 	}
 
 	acceptor.listen(Net::asio::socket_base::max_listen_connections, errorCode);
+	if (errorCode) {
+		spdlog::error("[Server] Error with the method listen");
+		return false;
+	}
 
-	std::cout << "Server is running on port" << Settings::port << '\n';
+	spdlog::info("[Server] Server is running on port {}", Settings::port);
+
+	return true;
 }
