@@ -6,9 +6,9 @@
 
 Server::Server() : acceptor(ioContext) {}
 
-bool Server::StartServer(int inputPort) {
+bool Server::StartServer(uint16_t inputPort) {
 
-	if (inputPort < 1024 || inputPort > 65535) {
+	if (inputPort < 1024) {
 		spdlog::error("[Server] Port isn't valid!");
 		return false;
 	}

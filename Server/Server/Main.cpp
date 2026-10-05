@@ -9,7 +9,7 @@ int main() {
     spdlog::info("[Main] Application started. Preparing configuration...");
     try {
         Server server;
-        int port;
+        uint16_t port;
 
         std::cout << "Write port:";
         std::cin >> port;
