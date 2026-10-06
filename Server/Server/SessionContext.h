@@ -3,7 +3,7 @@
 #include <chrono>
 
 struct SessionContext {
-	uint64_t sessionId = -1;
+	uint64_t sessionId = 0;
 	std::string userId;
 	bool isAuthorized;
 
