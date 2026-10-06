@@ -2,15 +2,20 @@
 #include <exception>
 #include <spdlog/spdlog.h>
 #include "Server.h"
+#include "Core.h"
 
 int main() {
     spdlog::set_pattern("[%X] [%^%l%$] %v");
-
+    
     spdlog::info("[Main] Application started. Preparing configuration...");
     try {
-        Server server;
-        uint16_t port;
+        // Internal component
+        Core core;
+        Net::asio::io_context ioContext;
+        // External component
+        Server server(ioContext, core);
 
+        uint16_t port;
         std::cout << "Write port:";
         std::cin >> port;
 
