@@ -12,4 +12,6 @@ namespace Net {
 
 namespace Settings {
 	inline uint16_t port;
+
+	constexpr size_t sizePacket = 4096;
 }
