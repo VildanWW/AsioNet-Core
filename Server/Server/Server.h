@@ -4,22 +4,35 @@
 #include <memory>
 #include "Settings.h"
 
-class Core;
-class ClientSession;
+namespace ServerAsio {
+	namespace Logic {
+		class Core;
+	}
+}
 
-class Server {
-private:
-	Net::asio::io_context& ioContext;
-	Net::tcp::acceptor acceptor;
+namespace ServerAsio {
+	namespace Network {
+		class ClientSession;
+	}
+}
 
-	Core& core;
-	
-	std::atomic<uint64_t> clientId = 1;
+namespace ServerAsio {
+	namespace Network {
+		class Server {
+		private:
+			Net::asio::io_context& ioContext;
+			Net::tcp::acceptor acceptor;
 
-	Net::asio::awaitable<void> StartAccept();
-	Net::asio::awaitable<void> HandleSessionLifeCycle(std::shared_ptr<ClientSession> session);
-public:
-	Server(Net::asio::io_context& ioContext, Core& core);
-	bool StartServer(uint16_t port);
-};
+			ServerAsio::Logic::Core& core;
+
+			std::atomic<uint64_t> clientId = 1;
+
+			Net::asio::awaitable<void> StartAccept();
+			Net::asio::awaitable<void> HandleSessionLifeCycle(std::shared_ptr<ClientSession> session);
+		public:
+			Server(Net::asio::io_context& ioContext, ServerAsio::Logic::Core& core);
+			bool StartServer(uint16_t port);
+		};
+	}
+}
 

@@ -3,6 +3,7 @@
 #include <spdlog/spdlog.h>
 #include "Server.h"
 #include "Core.h"
+#include "Settings.h"
 
 int main() {
     spdlog::set_pattern("[%X] [%^%l%$] %v");
@@ -10,10 +11,10 @@ int main() {
     spdlog::info("[Main] Application started. Preparing configuration...");
     try {
         // Internal component
-        Core core;
-        Net::asio::io_context ioContext;
+        ServerAsio::Logic::Core core;
+        ServerAsio::Net::asio::io_context ioContext;
         // External component
-        Server server(ioContext, core);
+        ServerAsio::Network::Server server(ioContext, core);
 
         uint16_t port;
         std::cout << "Write port:";

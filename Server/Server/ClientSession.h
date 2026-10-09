@@ -4,28 +4,37 @@
 #include <vector>
 #include <queue>
 #include "Settings.h"
-#include "SessionContext.h"
 
-class ClientSession : public std::enable_shared_from_this<ClientSession> {
-private:
-	Net::tcp::socket clientSocket;
-	std::unique_ptr<SessionContext> sessionContext;
-	
-	std::vector<uint8_t> readBuffer;
-	Net::asio::awaitable<void> ReadLoop();
+namespace ServerAsio {
+	namespace Network {
+		class SessionContext;
+	}
+}
 
-	std::queue<std::vector<uint8_t>> writeQueue;
-	std::mutex writeQueueMutex;
-	bool writingNow = false;
+namespace ServerAsio {
+	namespace Network {
+		class ClientSession : public std::enable_shared_from_this<ClientSession> {
+		private:
+			Net::tcp::socket clientSocket;
+			std::unique_ptr<SessionContext> sessionContext;
 
-	Net::asio::awaitable<void> WriteLoop();
-public:
-	ClientSession(Net::tcp::socket socket, uint64_t id);
-	~ClientSession();
+			std::vector<uint8_t> readBuffer;
+			Net::asio::awaitable<void> ReadLoop();
 
-	Net::asio::awaitable<void> Start();
+			std::queue<std::vector<uint8_t>> writeQueue;
+			std::mutex writeQueueMutex;
+			bool writingNow = false;
 
-	void Send(std::vector<uint8_t> packet);
+			Net::asio::awaitable<void> WriteLoop();
+		public:
+			ClientSession(Net::tcp::socket socket, uint64_t id);
+			~ClientSession();
 
-	uint64_t GetSessionId() const;
-};
+			Net::asio::awaitable<void> Start();
+
+			void Send(std::vector<uint8_t> packet);
+
+			uint64_t GetSessionId() const;
+		};
+	}
+}
