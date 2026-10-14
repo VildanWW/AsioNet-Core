@@ -35,4 +35,4 @@ Server/Server/x64/
 **/packages/
 packages/
 vcpkg_installed/
-.conan/
+.conan/ 
